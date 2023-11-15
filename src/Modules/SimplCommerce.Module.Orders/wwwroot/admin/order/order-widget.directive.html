@@ -1,12 +1,12 @@
-﻿<table class="table table-striped">
+﻿<table class="table table-vcenter">
     <thead>
         <tr>
             <th>{{::vm.translate.get('OrderId')}}</th>
             <th>{{::vm.translate.get('Order Status')}}</th>
             <th>{{::vm.translate.get('Customer')}}</th>
             <th>{{::vm.translate.get('Created On')}}</th>
-            <th class="text-right">{{::vm.translate.get('Order Total')}}</th>
-            <th>{{::vm.translate.get('Actions')}}</th>
+            <th class="text-end">{{::vm.translate.get('Order Total')}}</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -15,8 +15,14 @@
             <td>{{order.orderStatus}}</td>
             <td>{{order.customerName}}</td>
             <td>{{order.createdOn | date:'medium'}}</td>
-            <td class="text-right">{{order.orderTotalString }}</td>
-            <td><a ui-sref="order-detail({id: order.id})" title="View" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-eye-open"></span></a></td>
+            <td class="text-end">{{order.orderTotalString }}</td>
+            <td class="text-end">
+                <a ui-sref="order-detail({id: order.id})" class="btn btn-blue" title="View">
+                    View
+                </a>
+            </td>
         </tr>
     </tbody>
 </table>
+
+
