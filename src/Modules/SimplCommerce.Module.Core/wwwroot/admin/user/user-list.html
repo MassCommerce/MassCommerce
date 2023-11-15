@@ -1,79 +1,119 @@
-﻿<div class="page-header">
-    <div class="row">
-        <div class="col-md-8">
-            <h2>{{::vm.translate.get('Users')}}</h2>
-        </div>
-        <div class="col-md-4 text-right">
-            <a ui-sref="user-create" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> {{::vm.translate.get('Create User')}}</a>
+﻿<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                    User Management
+                </div>
+                <h2 class="page-title">
+                    {{::vm.translate.get('Users')}}
+                </h2>
+            </div>
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    <a ui-sref="user-create" class="btn btn-green d-none d-sm-inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 5l0 14"></path>
+                            <path d="M5 12l14 0"></path>
+                        </svg>
+                        {{::vm.translate.get('Create User')}}
+                    </a>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<table class="table table-striped" st-pipe="vm.getUsers" st-table="vm.users">
-    <thead>
-        <tr>
-            <th st-sort="Email" class="sortable">{{::vm.translate.get('Email')}}</th>
-            <th st-sort="FullName" class="sortable">{{::vm.translate.get('FullName')}}</th>
-            <th>{{::vm.translate.get('Roles')}}</th>
-            <th>{{::vm.translate.get('Customer Groups')}}</th>
-            <th st-sort="CreatedOn" class="sortable">{{::vm.translate.get('Created On')}}</th>
-            <th>{{::vm.translate.get('Actions')}}</th>
-        </tr>
-        <tr>
-            <th>
-                <div class="form-group">
-                    <input class="form-control" st-search="Email"/>
+
+
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table" st-pipe="vm.getUsers" st-table="vm.users">
+                    <thead>
+                        <tr>
+                            <th st-sort="Email">{{::vm.translate.get('Email')}}</th>
+                            <th st-sort="FullName">{{::vm.translate.get('FullName')}}</th>
+                            <th>{{::vm.translate.get('Roles')}}</th>
+                            <th>{{::vm.translate.get('Customer Groups')}}</th>
+                            <th st-sort="CreatedOn">{{::vm.translate.get('Created On')}}</th>
+                            <th>{{::vm.translate.get('Actions')}}</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div class="form-group">
+                                    <input class="form-control" st-search="Email" />
+                                </div>
+                            </th>
+                            <th>
+                                <div class="form-group">
+                                    <input class="form-control" st-search="FullName" />
+                                </div>
+                            </th>
+                            <th>
+                                <div class="form-group">
+                                    <select class="form-control" st-search="RoleId">
+                                        <option value="">{{::vm.translate.get('All')}}</option>
+                                        <option ng-repeat="role in vm.roles" value="{{role.id}}">{{role.name}}</option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="form-group">
+                                    <select class="form-control" st-search="CustomerGroupId">
+                                        <option value="">{{::vm.translate.get('All')}}</option>
+                                        <option ng-repeat="group in vm.customerGroups" value="{{group.id}}">{{group.name}}</option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th><st-date-range predicate="CreatedOn" before="query.before" after="query.after"></st-date-range></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                           
+                        </tr>
+                    </thead>
+                    <tbody ng-show="!vm.isLoading" class="table-tbody">
+                        <tr ng-repeat="user in vm.users">
+                            <td>{{user.email}}</td>
+                            <td>{{user.fullName}}</td>
+                            <td>{{user.roles.join(', ')}}</td>
+                            <td>{{user.customerGroups.join(', ')}}</td>
+                            <td>{{user.createdOn | date:'medium' }}</td>
+                            <td>
+                                <a ui-sref="user-edit({id: user.id})" title="Edit" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-pencil"></span></a>
+                                <button ng-click="vm.deleteUser(user)" class="btn btn-danger btn-xs delete"> <span class="glyphicon glyphicon-remove"></span></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="vm.isLoading">
+                        <tr>
+                            <td colspan="6" class="text-center">Loading ... </td>
+                        </tr>
+                    </tbody>
+                    <tfoot class="card-footer d-flex align-items-center">
+                        <tr class="pagination m-0 ms-auto">
+                            <td class="text-center" st-pagination="" st-items-by-page="5" st-displayed-pages="3" colspan="6"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+            <div class="card-footer d-flex align-items-center">
+                <p class="m-0 text-muted" ng-show="!vm.isLoading"><span>{{vm.tableStateRef.pagination.numberOfPages | number:0}}</span>of<span>{{vm.tableStateRef.pagination.totalItemCount | number:0}}</span> {{::vm.translate.get('records found')}}</p>
+                <div class="d-flex align-items-center">
+                    <div class="text-center" st-pagination="" st-items-by-page="5" st-displayed-pages="3"></div>
                 </div>
-            </th>
-            <th>
-                <div class="form-group">
-                    <input class="form-control" st-search="FullName"/>
-                </div>
-            </th>
-            <th>
-                <div class="form-group">
-                    <select class="form-control" st-search="RoleId">
-                        <option value="">{{::vm.translate.get('All')}}</option>
-                        <option ng-repeat="role in vm.roles" value="{{role.id}}">{{role.name}}</option>
-                    </select>
-                </div>
-            </th>
-            <th>
-                <div class="form-group">
-                    <select class="form-control" st-search="CustomerGroupId">
-                        <option value="">{{::vm.translate.get('All')}}</option>
-                        <option ng-repeat="group in vm.customerGroups" value="{{group.id}}">{{group.name}}</option>
-                    </select>
-                </div>
-            </th>
-            <th><st-date-range predicate="CreatedOn" before="query.before" after="query.after"></st-date-range></th>
-            <th></th>
-        </tr>
-        <tr>
-            <th ng-show="!vm.isLoading" colspan="6">{{vm.tableStateRef.pagination.totalItemCount | number:0}} {{::vm.translate.get('records found')}}</th>
-        </tr>
-    </thead>
-    <tbody ng-show="!vm.isLoading">
-        <tr ng-repeat="user in vm.users">
-            <td>{{user.email}}</td>
-            <td>{{user.fullName}}</td>
-            <td>{{user.roles.join(', ')}}</td>
-            <td>{{user.customerGroups.join(', ')}}</td>
-            <td>{{user.createdOn | date:'medium' }}</td>
-            <td>
-                <a ui-sref="user-edit({id: user.id})" title="Edit" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-pencil"></span></a>
-                <button ng-click="vm.deleteUser(user)" class="btn btn-danger btn-xs delete"> <span class="glyphicon glyphicon-remove"></span></button>
-            </td>
-        </tr>
-    </tbody>
-    <tbody ng-show="vm.isLoading">
-        <tr>
-            <td colspan="6" class="text-center">Loading ... </td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td class="text-center" st-pagination="" st-items-by-page="50" st-displayed-pages="10" colspan="6"></td>
-        </tr>
-    </tfoot>
-</table>	
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,4 +1,4 @@
-/** 
+﻿/** 
 * @version 2.1.10
 * @license MIT
 */
@@ -7,9 +7,11 @@
 
 ng.module('smart-table', []).run(['$templateCache', function ($templateCache) {
     $templateCache.put('template/smart-table/pagination.html',
-        '<nav ng-if="numPages && pages.length >= 2"><ul class="pagination">' +
-        '<li ng-repeat="page in pages" ng-class="{active: page==currentPage}"><a href="#" ng-click="selectPage(page); $event.preventDefault(); $event.stopPropagation();">{{page}}</a></li>' +
-        '</ul></nav>');
+            '<ul class="pagination m-0 ms-auto" ng-if="numPages && pages.length >= 2"> ' +
+                '<li class="page-item" ng-repeat="page in pages" ng-class="{active: page==currentPage}">' +
+                    '<a href="#" class="page-link" ng-click="selectPage(page); $event.preventDefault(); $event.stopPropagation();">{{page}}</a>' +
+                '</li>' +
+            '</ul>');
 }]);
 
 
@@ -18,7 +20,7 @@ ng.module('smart-table')
     pagination: {
       template: 'template/smart-table/pagination.html',
       itemsByPage: 10,
-      displayedPages: 5
+      displayedPages: 5,
     },
     search: {
       delay: 400, // ms

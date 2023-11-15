@@ -2,70 +2,138 @@
     Layout = null;
 }
 
-<h1>@Localizer["Dashboard"]</h1>
+<!-- Page header -->
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                    Main
+                </div>
+                <h2 class="page-title">
+                    @Localizer["Dashboard"]
+                </h2>
+            </div>
+            <!-- Page title actions -->
+           <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    <a href="#" class="btn btn-green d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path>
+                            <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path>
+                        </svg>
+                        Refresh
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">@Localizer["Latest orders"]</h3>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-deck row-cards"> 
+            <div class="col-md-12 col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">@Localizer["Latest orders"]</h3>
+                    </div>
+                    <div class="card-table table-responsive">
+                        <order-widget status="0" num-records="5"></order-widget>
+                    </div>
+                </div>
             </div>
-            <div class="panel-body">
-                <order-widget status="0" num-records="5"></order-widget>
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">@Localizer["Most viewed products"]</h3>
+                    </div>
+                    <div class="card-table table-responsive">
+                        <most-viewed-products></most-viewed-products>
+                    </div>
+                </div>
             </div>
+            @if (User.IsInRole("admin"))
+            {
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">@Localizer["Pending reviews"]</h3>
+                        </div>
+                        <div class="card-table table-responsive">
+                            <review-widget status="1" num-records="5"></review-widget>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">@Localizer["Pending review replies"]</h3>
+                        </div>
+                        <div class="card-table table-responsive">
+                            <review-reply-widget status="1" num-records="5"></review-reply-widget>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">@Localizer["Most searched keywords"]</h3>
+                        </div>
+                        <div class="card-table table-responsive">
+                            <most-search-keyword></most-search-keyword>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    
+                </div>
+            }
         </div>
+        
     </div>
-    @if (User.IsInRole("admin"))
-    {
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">@Localizer["Pending reviews"]</h3>
-            </div>
-            <div class="panel-body">
-                <review-widget status="1" num-records="5"></review-widget>
-            </div>
-        </div>
-    </div>
-    }
 </div>
-@if (User.IsInRole("admin"))
-{
-<div class="row">
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">@Localizer["Pending review replies"]</h3>
+
+<footer class="footer footer-transparent d-print-none">
+    <div class="container-xl">
+        <div class="row text-center align-items-center flex-row-reverse">
+            <div class="col-lg-auto ms-lg-auto">
+                <ul class="list-inline list-inline-dots mb-0">
+                    <li class="list-inline-item"><a href="https://tabler.io/docs" target="_blank" class="link-secondary" rel="noopener">Documentation</a></li>
+                    <li class="list-inline-item"><a href="./license.html" class="link-secondary">License</a></li>
+                    <li class="list-inline-item"><a href="https://github.com/tabler/tabler" target="_blank" class="link-secondary" rel="noopener">Source code</a></li>
+                    <li class="list-inline-item">
+                        <a href="https://github.com/sponsors/codecalm" target="_blank" class="link-secondary" rel="noopener">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink icon-filled icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                            Sponsor
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <div class="panel-body">
-                <review-reply-widget status="1" num-records="5"></review-reply-widget>
-            </div>
-        </div>
-    </div>
-</div>
-}
-@if (User.IsInRole("admin"))
-{
-<div class="row">
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">@Localizer["Most searched keywords"]</h3>
-            </div>
-            <div class="panel-body">
-                <most-search-keyword></most-search-keyword>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">@Localizer["Most viewed products"]</h3>
-            </div>
-            <div class="panel-body">
-                <most-viewed-products></most-viewed-products>
+            <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                <ul class="list-inline list-inline-dots mb-0">
+                    <li class="list-inline-item">
+                        Copyright &copy; 2023
+                        <a href="." class="link-secondary">Tabler</a>.
+                        All rights reserved.
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="./changelog.html" class="link-secondary" rel="noopener">
+                            v1.0.0-beta19
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
-</div>
-}
+</footer>
