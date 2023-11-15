@@ -23,17 +23,21 @@ using SimplCommerce.Module.Localization.TagHelpers;
 using SimplCommerce.WebHost.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 ConfigureService();
 var app = builder.Build();
 Configure();
 app.Run();
 
-void ConfigureService() 
+void ConfigureService()
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     builder.Configuration.AddEntityFrameworkConfig(options =>
     {
-        options.UseSqlServer(connectionString);
+        options.UseNpgsql(connectionString);
     });
 
     GlobalConfiguration.WebRootPath = builder.Environment.WebRootPath;
@@ -64,7 +68,7 @@ void ConfigureService()
     foreach (var module in GlobalConfiguration.Modules)
     {
         var moduleInitializerType = module.Assembly.GetTypes()
-           .FirstOrDefault(t => typeof(IModuleInitializer).IsAssignableFrom(t));
+            .FirstOrDefault(t => typeof(IModuleInitializer).IsAssignableFrom(t));
         if ((moduleInitializerType != null) && (moduleInitializerType != typeof(IModuleInitializer)))
         {
             var moduleInitializer = (IModuleInitializer)Activator.CreateInstance(moduleInitializerType);
@@ -83,7 +87,7 @@ void ConfigureService()
 }
 
 void Configure()
-    { 
+{
     if (app.Environment.IsDevelopment())
     {
         app.UseDeveloperExceptionPage();
